@@ -13,4 +13,8 @@
     "remark": "^14.0.2",
     "remark-html": "^15.0.2"
   }
+
+  "scripts": {
+    "build": "node scripts/generatePosts.js && next build"
+  }
 }
