@@ -1,31 +1,31 @@
 const { getKey } = require("./auth");
 
-async function callOpenAI(prompt) {
-  const apiKey = getKey("OPENAI_API_KEY");
+async function callGroq(prompt) {
+  const apiKey = getKey("GROQ_API_KEY");
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-4o-mini",
+      model: "llama-3.1-8b-instant",
       messages: [
         { role: "user", content: prompt }
       ],
-      temperature: 0.7
-    })
+      temperature: 0.7,
+    }),
   });
 
   if (!res.ok) {
     const errorText = await res.text();
-    throw new Error(`OpenAI API Error: ${errorText}`);
+    throw new Error(`Groq API error: ${errorText}`);
   }
 
   const data = await res.json();
 
-  return data?.choices?.[0]?.message?.content ?? "";
+  return data.choices?.[0]?.message?.content;
 }
 
-module.exports = { callOpenAI };
+module.exports = { callGroq };
