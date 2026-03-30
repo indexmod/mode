@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>Indexmod Fashion & Art 2026</title>
 
-  <img src="/mode/logo.png" class="logo" alt="logo">
-
   <style>
     @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
 
@@ -27,25 +25,14 @@
       margin: 0 auto;
     }
 
-    /* HEADER — максимально близко к indexmod */
-    .header {
-      margin-bottom: 60px;
-    }
-
+    /* LOGO */
     .logo {
       height: 58px;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 40px;
     }
 
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.05;
-    }
-
-    /* 3 КОЛОНКИ (как editorial grid) */
+    /* 3 КОЛОНКИ */
     .topics {
       display: flex;
       gap: 60px;
@@ -56,21 +43,28 @@
       flex: 1;
     }
 
-    /* ГРУППА */
+    /* GROUP */
     .topic-group {
       margin-bottom: 40px;
-      position: relative;
     }
 
-    /* буква как indexmod (одна на группу) */
     .topic-group h2 {
       font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 18px;
       letter-spacing: 0.02em;
     }
 
-    /* топики */
+    /* буквица (без обтекания, чистый блок) */
+    .topic-group h2 .letter {
+      display: block;
+      font-size: 3.6rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    /* TOPIC */
     .topic {
       display: block;
       font-size: 1rem;
@@ -84,37 +78,17 @@
       color: #888;
     }
 
-    /* БУКВИЦА — строгая editorial версия */
-    .topic-group h2::first-letter {
-      font-size: 3.6rem;
-      float: left;
-      line-height: 0.9;
-      padding-right: 10px;
-      font-weight: 700;
-    }
-
-    /* OUTPUT минимальный (как в indexmod — почти служебный слой) */
+    /* OUTPUT */
     #output {
       margin-top: 80px;
       font-size: 0.85rem;
       color: #999;
-      letter-spacing: 0.02em;
     }
 
     /* RESPONSIVE */
-    @media (max-width: 1100px) {
-      .topics {
-        gap: 40px;
-      }
-    }
-
     @media (max-width: 900px) {
       .topics {
         flex-direction: column;
-      }
-
-      .column {
-        width: 100%;
       }
     }
   </style>
@@ -124,10 +98,8 @@
 
   <div class="container">
 
-    <header class="header">
-      <img src="./logo.png" class="logo" alt="logo">
-      <h1>Indexmod Fashion & Art 2026</h1>
-    </header>
+    <!-- LOGO (оставили только его) -->
+    <img src="/mode/logo.png" class="logo" alt="logo">
 
     <div class="topics" id="list"></div>
 
@@ -150,7 +122,6 @@
         .replace(/(^-|-$)+/g, "");
     }
 
-    // группировка
     const groups = {};
 
     topics.forEach(t => {
@@ -159,41 +130,35 @@
       groups[letter].push(t);
     });
 
-    const sortedLetters = Object.keys(groups).sort();
-
-    // 3 колонки
     const cols = Array.from({ length: 3 }, () => {
       const c = document.createElement('div');
       c.className = 'column';
       return c;
     });
 
-    sortedLetters.forEach((letter, i) => {
+    Object.keys(groups).sort().forEach((letter, i) => {
       const group = document.createElement('div');
       group.className = 'topic-group';
 
       const title = document.createElement('h2');
-      title.textContent = letter;
-
+      title.innerHTML = `<span class="letter">${letter}</span>`;
       group.appendChild(title);
 
-      groups[letter]
-        .sort()
-        .forEach(topic => {
-          const a = document.createElement('a');
-          a.className = 'topic';
-          a.textContent = topic;
+      groups[letter].sort().forEach(topic => {
+        const a = document.createElement('a');
+        a.className = 'topic';
+        a.textContent = topic;
 
-          const slug = slugify(topic);
-          a.href = `./dist/${slug}.html`;
-          a.target = "_blank";
+        const slug = slugify(topic);
+        a.href = `./dist/${slug}.html`;
+        a.target = "_blank";
 
-          a.onclick = () => {
-            output.textContent = topic;
-          };
+        a.onclick = () => {
+          output.textContent = topic;
+        };
 
-          group.appendChild(a);
-        });
+        group.appendChild(a);
+      });
 
       cols[i % 3].appendChild(group);
     });
