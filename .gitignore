@@ -1,4 +1,10 @@
+# macOS
+.DS_Store
+**/.DS_Store
 
+# SecureBox runtime (НЕ КОММИТИТЬ)
+03_SECURE_BOX/test.js
+03_SECURE_BOX/providers/auth.js
 # Dependencies
 node_modules/
 
