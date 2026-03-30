@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Topics Board</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #0f0f0f;
+      color: #ffffff;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .topic {
+      padding: 10px 14px;
+      margin: 6px 0;
+      background: #1e1e1e;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .topic:hover {
+      background: #2a2a2a;
+    }
+
+    #output {
+      margin-top: 30px;
+      padding: 20px;
+      background: #111;
+      border-radius: 10px;
+      min-height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📚 Topics Board</h1>
+
+  <div id="list"></div>
+
+  <div id="output">
+    Click a topic to generate article...
+  </div>
+
+  <script type="module">
+    import { loadTopics } from './topics.js';
+
+    const list = document.getElementById('list');
+    const output = document.getElementById('output');
+
+    const topics = await loadTopics();
+
+    topics.forEach(topic => {
+      const div = document.createElement('div');
+      div.className = 'topic';
+      div.textContent = topic;
+
+      div.onclick = async () => {
+        output.innerHTML = `
+          <h3>Selected topic:</h3>
+          <p>${topic}</p>
+          <hr />
+          <p>🚧 Next step: connect to generator API</p>
+        `;
+      };
+
+      list.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>
