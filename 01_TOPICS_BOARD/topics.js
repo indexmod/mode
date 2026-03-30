@@ -1,7 +1,7 @@
 // 01_TOPICS_BOARD/topics.js
 
 export async function loadTopics() {
-  const res = await fetch('/mode/01_TOPICS_BOARD/topics.txt');
+  const res = await fetch('./topics.txt');
   const text = await res.text();
 
   return text
