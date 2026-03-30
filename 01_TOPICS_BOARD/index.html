@@ -5,41 +5,85 @@
   <title>Topics Board</title>
 
   <style>
+    /* ------------------------------ */
+    /* Подключение шрифта */
+    /* ------------------------------ */
+    @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Old Standard TT', serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
       margin: 40px;
-      background: #0f0f0f;
-      color: #ffffff;
     }
 
     h1 {
-      font-size: 22px;
-      margin-bottom: 20px;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.2rem;
+    }
+
+    /* ------------------------------ */
+    /* Layout */
+    /* ------------------------------ */
+    #list {
+      max-width: 1200px;
+    }
+
+    .topic-group {
+      margin-bottom: 1.5rem;
     }
 
     .topic {
       display: block;
-      padding: 10px 14px;
-      margin: 6px 0;
-      background: #1e1e1e;
-      border-radius: 8px;
+      cursor: pointer;
+      padding: 5px 0;
       text-decoration: none;
-      color: white;
-      transition: 0.2s;
+      color: inherit;
+      transition: color 0.2s;
     }
 
     .topic:hover {
-      background: #2a2a2a;
+      color: #0077ff;
+    }
+
+    /* Буквица */
+    .topic-group .topic:first-of-type::first-letter {
+      font-size: 2.4rem;
+      font-weight: bold;
+      float: left;
+      line-height: 1;
+      padding-right: 6px;
+      padding-top: 2px;
     }
 
     #output {
       margin-top: 30px;
       padding: 20px;
-      background: #111;
+      background: #f5f5f5;
       border-radius: 10px;
       min-height: 100px;
       font-size: 14px;
-      opacity: 0.8;
     }
   </style>
 </head>
@@ -69,25 +113,54 @@
 
     const topics = await loadTopics();
 
+    // 🔥 ГРУППИРОВКА
+    const groups = {};
+
     topics.forEach(topic => {
-      const slug = slugify(topic);
+      const letter = topic[0].toUpperCase();
 
-      const link = document.createElement('a');
-      link.className = 'topic';
-      link.textContent = topic;
+      if (!groups[letter]) {
+        groups[letter] = [];
+      }
 
-      // 👉 ссылка на сгенерированную страницу
-      link.href = `../dist/${slug}.html`;
-      link.target = "_blank";
+      groups[letter].push(topic);
+    });
 
-      link.onclick = () => {
-        output.innerHTML = `
-          <h3>Opening article:</h3>
-          <p>${topic}</p>
-        `;
-      };
+    const sortedLetters = Object.keys(groups).sort();
 
-      list.appendChild(link);
+    // 🔥 РЕНДЕР
+    sortedLetters.forEach(letter => {
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'topic-group';
+
+      const title = document.createElement('h2');
+      title.textContent = letter;
+
+      groupDiv.appendChild(title);
+
+      groups[letter]
+        .sort()
+        .forEach(topic => {
+          const slug = slugify(topic);
+
+          const link = document.createElement('a');
+          link.className = 'topic';
+          link.textContent = topic;
+
+          link.href = `../dist/${slug}.html`;
+          link.target = "_blank";
+
+          link.onclick = () => {
+            output.innerHTML = `
+              <h3>Opening article:</h3>
+              <p>${topic}</p>
+            `;
+          };
+
+          groupDiv.appendChild(link);
+        });
+
+      list.appendChild(groupDiv);
     });
   </script>
 
