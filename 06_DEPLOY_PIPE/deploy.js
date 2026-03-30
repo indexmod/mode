@@ -4,10 +4,12 @@ const { buildSite } = require("../05_SITE_RENDERER/build");
 const { exec } = require("child_process");
 const path = require("path");
 
-async function deploy(topic) {
+async function deploy(topic, options = {}) {
   if (!topic) {
     throw new Error("Topic is required");
   }
+
+  const { open = false } = options;
 
   console.log("🚀 DEPLOY START:", topic);
 
@@ -17,7 +19,6 @@ async function deploy(topic) {
   // 2. Сборка HTML сайта
   buildSite();
 
-  // 3. Открытие в браузере
   const fileName = result.filePath
     .split("/")
     .pop()
@@ -25,14 +26,17 @@ async function deploy(topic) {
 
   const fullPath = path.join(__dirname, "../dist", fileName);
 
-  openInBrowser(fullPath);
+  // 👉 открываем только локально
+  if (open) {
+    openInBrowser(fullPath);
+  }
 
-  console.log("✅ DEPLOY DONE");
+  console.log("✅ DEPLOY DONE:", fullPath);
 
   return fullPath;
 }
 
-// открытие файла (macOS)
+// только для локальной разработки
 function openInBrowser(filePath) {
   exec(`open "${filePath}"`);
 }

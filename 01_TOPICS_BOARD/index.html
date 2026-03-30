@@ -18,11 +18,13 @@
     }
 
     .topic {
+      display: block;
       padding: 10px 14px;
       margin: 6px 0;
       background: #1e1e1e;
       border-radius: 8px;
-      cursor: pointer;
+      text-decoration: none;
+      color: white;
       transition: 0.2s;
     }
 
@@ -35,7 +37,9 @@
       padding: 20px;
       background: #111;
       border-radius: 10px;
-      min-height: 200px;
+      min-height: 100px;
+      font-size: 14px;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -47,7 +51,7 @@
   <div id="list"></div>
 
   <div id="output">
-    Click a topic to generate article...
+    Click a topic to open generated article
   </div>
 
   <script type="module">
@@ -56,23 +60,34 @@
     const list = document.getElementById('list');
     const output = document.getElementById('output');
 
+    function slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
+    }
+
     const topics = await loadTopics();
 
     topics.forEach(topic => {
-      const div = document.createElement('div');
-      div.className = 'topic';
-      div.textContent = topic;
+      const slug = slugify(topic);
 
-      div.onclick = async () => {
+      const link = document.createElement('a');
+      link.className = 'topic';
+      link.textContent = topic;
+
+      // 👉 ссылка на сгенерированную страницу
+      link.href = `../dist/${slug}.html`;
+      link.target = "_blank";
+
+      link.onclick = () => {
         output.innerHTML = `
-          <h3>Selected topic:</h3>
+          <h3>Opening article:</h3>
           <p>${topic}</p>
-          <hr />
-          <p>🚧 Next step: connect to generator API</p>
         `;
       };
 
-      list.appendChild(div);
+      list.appendChild(link);
     });
   </script>
 
