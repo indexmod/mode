@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Indexmod Fashion & Art 2026</title>
 
-  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/png" href="./logo.png">
 
   <style>
     @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
@@ -27,13 +27,14 @@
       margin: 0 auto;
     }
 
-    /* HEADER (как в indexmod 3.0) */
+    /* HEADER — максимально близко к indexmod */
     .header {
-      margin-bottom: 50px;
+      margin-bottom: 60px;
     }
 
     .logo {
-      height: 60px;
+      height: 58px;
+      display: block;
       margin-bottom: 10px;
     }
 
@@ -41,73 +42,77 @@
       font-size: 3rem;
       font-weight: 700;
       letter-spacing: -0.02em;
+      line-height: 1.05;
     }
 
-    /* 3 КОЛОНКИ */
+    /* 3 КОЛОНКИ (как editorial grid) */
     .topics {
       display: flex;
-      justify-content: space-between;
-      gap: 40px;
+      gap: 60px;
+      align-items: flex-start;
     }
 
     .column {
-      width: 32%;
+      flex: 1;
     }
 
-    /* ГРУППА БУКВЫ */
+    /* ГРУППА */
     .topic-group {
       margin-bottom: 40px;
+      position: relative;
     }
 
-    h2 {
-      font-size: 1.2rem;
+    /* буква как indexmod (одна на группу) */
+    .topic-group h2 {
+      font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 10px;
-      color: #000;
+      letter-spacing: 0.02em;
     }
 
-    /* ТОПИКИ */
+    /* топики */
     .topic {
       display: block;
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.55;
       text-decoration: none;
       color: #111;
-      transition: color 0.2s;
-      cursor: pointer;
+      transition: color 0.25s ease;
     }
 
     .topic:hover {
-      color: #777;
+      color: #888;
     }
 
-    /* БУКВИЦА (ОДНА НА ГРУППУ) */
-    .topic-group:first-letter {
-      font-size: 3.5rem;
+    /* БУКВИЦА — строгая editorial версия */
+    .topic-group h2::first-letter {
+      font-size: 3.6rem;
       float: left;
-      line-height: 1;
+      line-height: 0.9;
       padding-right: 10px;
       font-weight: 700;
     }
 
-    /* OUTPUT (минимальный, не как блок) */
+    /* OUTPUT минимальный (как в indexmod — почти служебный слой) */
     #output {
-      margin-top: 60px;
-      font-size: 0.9rem;
-      opacity: 0.6;
+      margin-top: 80px;
+      font-size: 0.85rem;
+      color: #999;
+      letter-spacing: 0.02em;
     }
 
     /* RESPONSIVE */
-    @media (max-width: 1024px) {
+    @media (max-width: 1100px) {
       .topics {
-        flex-wrap: wrap;
-      }
-      .column {
-        width: 48%;
+        gap: 40px;
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
+      .topics {
+        flex-direction: column;
+      }
+
       .column {
         width: 100%;
       }
@@ -120,7 +125,7 @@
   <div class="container">
 
     <header class="header">
-      <img src="logo.png" class="logo">
+      <img src="./logo.png" class="logo" alt="logo">
       <h1>Indexmod Fashion & Art 2026</h1>
     </header>
 
@@ -156,12 +161,12 @@
 
     const sortedLetters = Object.keys(groups).sort();
 
-    // создаём 3 колонки
-    const cols = [document.createElement('div'),
-                 document.createElement('div'),
-                 document.createElement('div')];
-
-    cols.forEach(c => c.className = 'column');
+    // 3 колонки
+    const cols = Array.from({ length: 3 }, () => {
+      const c = document.createElement('div');
+      c.className = 'column';
+      return c;
+    });
 
     sortedLetters.forEach((letter, i) => {
       const group = document.createElement('div');
@@ -180,7 +185,7 @@
           a.textContent = topic;
 
           const slug = slugify(topic);
-          a.href = `../dist/${slug}.html`;
+          a.href = `./dist/${slug}.html`;
           a.target = "_blank";
 
           a.onclick = () => {
