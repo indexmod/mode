@@ -6,8 +6,54 @@
 
   <link rel="stylesheet" href="./styles.css">
 
-  <!-- Markdown parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0b0b0b;
+      color: #eaeaea;
+    }
+
+    .content-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.65;
+    }
+
+    h1, h2, h3 {
+      color: #fff;
+    }
+
+    a {
+      color: #6fa8ff;
+    }
+
+    /* CITATIONS */
+    .citation {
+      color: #6fa8ff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .citation:hover {
+      text-decoration: underline;
+    }
+
+    /* REFERENCES */
+    li {
+      transition: background 0.3s ease;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    /* loading state */
+    #article {
+      min-height: 200px;
+    }
+  </style>
 </head>
 
 <body>
@@ -30,23 +76,80 @@ if (!slug) {
 
   async function loadArticle() {
     try {
+
       const res = await fetch(workerURL);
       const md = await res.text();
 
+      if (!md || md.trim().length === 0) {
+        container.innerHTML = "<p>Empty response</p>";
+        return;
+      }
+
+      // -----------------------------
       // Markdown → HTML
-      const html = marked.parse(md);
+      // -----------------------------
+      let html = marked.parse(md);
 
       container.innerHTML = html;
 
-      // заголовок страницы
+      // -----------------------------
+      // Title
+      // -----------------------------
       const firstLine = md.split("\n")[0];
       if (firstLine.startsWith("# ")) {
         document.title = firstLine.replace("# ", "");
       }
 
+      // -----------------------------
+      // CITATIONS [1] → clickable
+      // -----------------------------
+      container.innerHTML = container.innerHTML.replace(
+        /\[(\d+)\]/g,
+        (m, num) => {
+          return `<span class="citation" data-id="${num}">[${num}]</span>`;
+        }
+      );
+
+      // -----------------------------
+      // INDEX REFERENCES
+      // -----------------------------
+      const refs = document.querySelectorAll("li");
+
+      refs.forEach(li => {
+        const match = li.textContent.match(/^\[(\d+)\]/);
+        if (match) {
+          li.id = `ref-${match[1]}`;
+        }
+      });
+
+      // -----------------------------
+      // CLICK HANDLERS
+      // -----------------------------
+      document.querySelectorAll(".citation").forEach(el => {
+
+        el.onclick = () => {
+          const id = el.dataset.id;
+          const target = document.getElementById(`ref-${id}`);
+
+          if (!target) return;
+
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
+          target.style.background = "rgba(111,168,255,0.15)";
+
+          setTimeout(() => {
+            target.style.background = "";
+          }, 1200);
+        };
+
+      });
+
     } catch (err) {
-      container.innerHTML = "<p>Error loading article</p>";
       console.error(err);
+      container.innerHTML = "<p>Error loading article</p>";
     }
   }
 
