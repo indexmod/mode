@@ -3,7 +3,6 @@
    NEWSPAPER EDITION
    ========================= */
 
-/* Шрифт */
 @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
 
 /* Reset */
@@ -17,7 +16,7 @@ html {
 }
 
 /* =========================
-   BODY — газетный ритм
+   BODY
    ========================= */
 
 body {
@@ -25,12 +24,13 @@ body {
   line-height: 1.75;
   color: #111;
   background: #fff;
-
-  /* "газетные поля" */
   padding: 48px;
 }
 
-/* Контейнер */
+/* =========================
+   CONTAINER
+   ========================= */
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -38,7 +38,7 @@ body {
 }
 
 /* =========================
-   TYPOGRAPHY — редакционный ритм
+   TYPOGRAPHY
    ========================= */
 
 h1 {
@@ -67,27 +67,27 @@ h3 {
 p {
   font-size: 1.15rem;
   margin: 0 0 1.1rem;
-  max-width: 70ch; /* газетная читаемость */
+  max-width: 70ch;
 }
 
 /* =========================
-   LINKS — без подчёркивания
+   LINKS (FULL REMOVE UNDERLINE)
    ========================= */
 
 a {
   color: #000;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: opacity 0.2s ease, border-color 0.2s ease;
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 a:hover {
   opacity: 0.6;
-  border-bottom: 1px solid #000;
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 /* =========================
-   LISTS — газетный стиль
+   LISTS
    ========================= */
 
 ul {
@@ -103,15 +103,15 @@ li {
 }
 
 /* =========================
-   ARTICLE WRAPPER
+   ARTICLE
    ========================= */
 
 .article {
-  max-width: 760px;
+  max-width: 100%;
 }
 
 /* =========================
-   COLUMNS — 3 колонки (газета)
+   COLUMNS
    ========================= */
 
 .columns-container {
@@ -119,12 +119,26 @@ li {
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 
-  /* газетный воздух */
-  margin-top: 2rem;
+  margin-top: 2.5rem; /* 👈 ВОТ ЭТО убирает "слипание" */
 }
+
+/* =========================
+   COLUMN GROUP SPACING FIX
+   ========================= */
 
 .column {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* 👈 добавляет воздух между группами */
+}
+
+/* =========================
+   TOPIC GROUP (если есть)
+   ========================= */
+
+.topic-group {
+  margin-bottom: 1.8rem; /* 👈 ключевой фикс "слипания" */
 }
 
 /* =========================
@@ -139,10 +153,6 @@ li {
   .columns-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 22px;
-  }
-
-  p {
-    max-width: 65ch;
   }
 }
 
