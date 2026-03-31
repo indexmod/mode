@@ -1,4 +1,4 @@
-// 01_TOPICS_BOARD/topics.js
+
 
 export async function loadTopics() {
   const res = await fetch('./topics.txt');

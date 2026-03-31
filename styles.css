@@ -71,19 +71,20 @@ p {
 }
 
 /* =========================
-   LINKS (FULL REMOVE UNDERLINE)
+   LINKS
    ========================= */
 
 a {
-  color: #000;
-  text-decoration: none !important;
-  border-bottom: none !important;
+  color: #111;
+  text-decoration: none;
+  border: none;
+  outline: none;
 }
 
 a:hover {
-  opacity: 0.6;
-  text-decoration: none !important;
-  border-bottom: none !important;
+  opacity: 0.65;
+  text-decoration: none;
+  border: none;
 }
 
 /* =========================
@@ -117,28 +118,44 @@ li {
 .columns-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-
-  margin-top: 2.5rem; /* 👈 ВОТ ЭТО убирает "слипание" */
+  gap: 32px;
+  margin-top: 2.5rem;
 }
 
 /* =========================
-   COLUMN GROUP SPACING FIX
+   COLUMN
    ========================= */
 
 .column {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* 👈 добавляет воздух между группами */
 }
 
 /* =========================
-   TOPIC GROUP (если есть)
+   GROUP SPACING FIX
    ========================= */
 
 .topic-group {
-  margin-bottom: 1.8rem; /* 👈 ключевой фикс "слипания" */
+  margin-bottom: 2.2rem;
+}
+
+/* =========================
+   ITEM SPACING FIX (CRITICAL)
+   ========================= */
+
+.topic-item {
+  margin-bottom: 6px;
+}
+
+/* =========================
+   TOPIC LINK RITM
+   ========================= */
+
+.topic {
+  display: block;
+  padding: 2px 0;
+  line-height: 1.4;
 }
 
 /* =========================

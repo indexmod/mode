@@ -29,12 +29,14 @@
 
     const groups = {};
 
+    // группировка по первой букве
     topics.forEach(t => {
       const letter = t[0].toUpperCase();
       if (!groups[letter]) groups[letter] = [];
       groups[letter].push(t);
     });
 
+    // создаём 3 колонки
     const cols = Array.from({ length: 3 }, () => {
       const c = document.createElement('div');
       c.className = 'column';
@@ -42,6 +44,7 @@
       return c;
     });
 
+    // slugify для URL
     function slugify(text) {
       return text
         .toLowerCase()
@@ -49,7 +52,9 @@
         .replace(/(^-|-$)+/g, "");
     }
 
+    // рендер групп
     Object.keys(groups).sort().forEach((letter, i) => {
+
       const group = document.createElement('div');
       group.className = 'topic-group';
 
@@ -57,7 +62,11 @@
       title.innerHTML = `<span class="letter">${letter}</span>`;
       group.appendChild(title);
 
+      // рендер тем внутри группы
       groups[letter].sort().forEach(topic => {
+
+        const item = document.createElement('div');
+        item.className = 'topic-item';
 
         const a = document.createElement('a');
         a.className = 'topic';
@@ -69,7 +78,8 @@
         a.target = "_blank";
         a.rel = "noopener noreferrer";
 
-        group.appendChild(a);
+        item.appendChild(a);
+        group.appendChild(item);
       });
 
       cols[i % 3].appendChild(group);
