@@ -21,33 +21,31 @@
     import { loadTopics } from './topics.js';
 
     const list = document.getElementById('list');
-
     const topics = await loadTopics();
 
     const groups = {};
 
-    // группировка по первой букве
-    topics.forEach(t => {
-      const letter = t[0].toUpperCase();
-      if (!groups[letter]) groups[letter] = [];
-      groups[letter].push(t);
-    });
-
-    // создаём 3 колонки
-    const cols = Array.from({ length: 3 }, () => {
-      const c = document.createElement('div');
-      c.className = 'column';
-      list.appendChild(c);
-      return c;
-    });
-
-    // slugify
     function slugify(text) {
       return text
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)+/g, "");
     }
+
+    // группировка
+    topics.forEach(t => {
+      const letter = t[0].toUpperCase();
+      if (!groups[letter]) groups[letter] = [];
+      groups[letter].push(t);
+    });
+
+    // 3 колонки
+    const cols = Array.from({ length: 3 }, () => {
+      const c = document.createElement('div');
+      c.className = 'column';
+      list.appendChild(c);
+      return c;
+    });
 
     // рендер
     Object.keys(groups).sort().forEach((letter, i) => {
@@ -70,7 +68,7 @@
 
         const slug = slugify(topic);
 
-        // 🔥 ВОТ ГЛАВНОЕ ИЗМЕНЕНИЕ
+        // 🔥 главное изменение
         a.href = `./article.html?slug=${slug}`;
         a.target = "_blank";
         a.rel = "noopener noreferrer";

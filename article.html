@@ -2,37 +2,55 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Article</title>
+  <title>Loading...</title>
 
   <link rel="stylesheet" href="./styles.css">
 
+  <!-- Markdown parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
 
-<div class="container">
-  <div id="article">Loading...</div>
+<div class="content-container">
+  <div id="article">Generating article...</div>
 </div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const slug = params.get("slug");
 
+const container = document.getElementById("article");
+
 if (!slug) {
-  document.getElementById("article").innerHTML = "No article";
+  container.innerHTML = "<p>No article</p>";
 } else {
 
-  const url = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
+  const workerURL = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
 
-  fetch(url)
-    .then(r => r.text())
-    .then(md => {
-      document.getElementById("article").innerHTML = marked.parse(md);
-    })
-    .catch(() => {
-      document.getElementById("article").innerHTML = "Error loading article";
-    });
+  async function loadArticle() {
+    try {
+      const res = await fetch(workerURL);
+      const md = await res.text();
+
+      // Markdown → HTML
+      const html = marked.parse(md);
+
+      container.innerHTML = html;
+
+      // заголовок страницы
+      const firstLine = md.split("\n")[0];
+      if (firstLine.startsWith("# ")) {
+        document.title = firstLine.replace("# ", "");
+      }
+
+    } catch (err) {
+      container.innerHTML = "<p>Error loading article</p>";
+      console.error(err);
+    }
+  }
+
+  loadArticle();
 }
 </script>
 
