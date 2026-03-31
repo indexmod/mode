@@ -2,19 +2,131 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+
   <title>Article</title>
 
-  <link rel="stylesheet" href="./article.css?v=999">
-
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    /* =========================
+       RESET
+       ========================= */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: #fff;
+      color: #000;
+      font-family: Georgia, serif;
+      line-height: 1.8;
+    }
+
+    /* =========================
+       OUTER LAYOUT (AIR)
+       ========================= */
+
+    .content-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+
+      padding: 120px 64px;
+    }
+
+    /* =========================
+       ARTICLE CORE
+       ========================= */
+
+    #article {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADINGS
+       ========================= */
+
+    #article h1 {
+      font-size: 2.8rem;
+      line-height: 1.1;
+      margin: 0 0 64px;
+    }
+
+    #article h2 {
+      font-size: 1.8rem;
+      margin: 96px 0 32px;
+    }
+
+    #article h3 {
+      font-size: 1.4rem;
+      margin: 64px 0 16px;
+    }
+
+    /* =========================
+       TEXT
+       ========================= */
+
+    #article p {
+      margin-bottom: 24px;
+      max-width: 70ch;
+    }
+
+    /* =========================
+       IMAGES
+       ========================= */
+
+    #article img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 80px 0;
+    }
+
+    /* =========================
+       BLOCKQUOTE
+       ========================= */
+
+    #article blockquote {
+      border-left: 3px solid #000;
+      padding-left: 24px;
+      margin: 80px 0;
+      font-style: italic;
+    }
+
+    /* =========================
+       CITATIONS
+       ========================= */
+
+    .citation {
+      font-size: 0.85em;
+      vertical-align: super;
+      opacity: 0.6;
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+
+    @media (max-width: 768px) {
+      .content-container {
+        padding: 80px 24px;
+      }
+
+      #article h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="content-container">
-
-<div id="article">Loading...</div>
-
+  <div id="article">Loading...</div>
 </div>
 
 <script>
@@ -31,7 +143,6 @@ if (!slug) {
 
   async function loadArticle() {
     try {
-
       const res = await fetch(workerURL);
       const md = await res.text();
 
@@ -45,7 +156,6 @@ if (!slug) {
       const html = marked.parse(md);
       container.innerHTML = html;
 
-      // citations
       container.innerHTML = container.innerHTML.replace(
         /\[(\d+)\]/g,
         (m, num) => `<span class="citation">[${num}]</span>`
