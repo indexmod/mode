@@ -62,13 +62,31 @@
         const a = document.createElement('a');
         a.className = 'topic';
         a.textContent = topic;
+        a.style.cursor = "pointer";
 
-        const slug = slugify(topic);
-        a.href = `./dist/${slug}.html`;
-        a.target = "_blank";
+        a.onclick = async (e) => {
+          e.preventDefault();
 
-        a.onclick = () => {
-          output.textContent = topic;
+          output.textContent = "Generating article...";
+
+          try {
+            const res = await fetch(
+              `https://indexmod-ai.chorus-live.workers.dev/?topic=${encodeURIComponent(topic)}`
+            );
+
+            const html = await res.text();
+
+            const win = window.open();
+            win.document.open();
+            win.document.write(html);
+            win.document.close();
+
+            output.textContent = topic;
+
+          } catch (err) {
+            output.textContent = "Error loading article";
+            console.error(err);
+          }
         };
 
         group.appendChild(a);
