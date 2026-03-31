@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Indexmod Fashion & Art 2026</title>
 
-  <!-- подключаем внешний стиль -->
   <link rel="stylesheet" href="./styles.css">
 </head>
 
@@ -12,10 +11,9 @@
 
   <div class="container">
 
-    <!-- LOGO -->
     <img src="./logo.png" class="logo" alt="logo">
 
-    <div class="topics" id="list"></div>
+    <div class="columns-container" id="list"></div>
 
     <div id="output">Click a topic</div>
 
@@ -29,13 +27,6 @@
 
     const topics = await loadTopics();
 
-    function slugify(text) {
-      return text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "");
-    }
-
     const groups = {};
 
     topics.forEach(t => {
@@ -47,6 +38,7 @@
     const cols = Array.from({ length: 3 }, () => {
       const c = document.createElement('div');
       c.className = 'column';
+      list.appendChild(c);
       return c;
     });
 
@@ -94,8 +86,6 @@
 
       cols[i % 3].appendChild(group);
     });
-
-    cols.forEach(c => list.appendChild(c));
   </script>
 
 </body>
