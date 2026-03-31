@@ -2,48 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Loading...</title>
+  <title>Article</title>
 
-  <!-- FIXED CSS CACHE -->
   <link rel="stylesheet" href="./article.css?v=999">
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
-    /* minimal safe UI ONLY */
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #0b0b0b;
-      color: #eaeaea;
-    }
-
-    .content-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      line-height: 1.65;
-    }
-
-    h1, h2, h3 {
-      color: #fff;
-    }
-
-    a {
-      color: #6fa8ff;
-    }
-
-    .citation {
-      color: #6fa8ff;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .citation:hover {
-      text-decoration: underline;
-    }
-
+    /* ТОЛЬКО если нужно — минимум UI */
     #topbar {
       position: sticky;
       top: 0;
@@ -51,22 +17,6 @@
       padding: 10px 0;
       border-bottom: 1px solid #222;
       margin-bottom: 20px;
-    }
-
-    button {
-      background: #6fa8ff;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 6px;
-      color: #000;
-      font-weight: 600;
-    }
-
-    li {
-      transition: background 0.3s ease;
-      padding: 2px 4px;
-      border-radius: 4px;
     }
   </style>
 </head>
@@ -76,10 +26,10 @@
 <div class="content-container">
 
   <div id="topbar">
-    <button id="pdfBtn">Download PDF</button>
+    <span>Article Viewer</span>
   </div>
 
-  <div id="article">Generating article...</div>
+  <div id="article">Loading...</div>
 
 </div>
 
@@ -101,62 +51,28 @@ if (!slug) {
       const res = await fetch(workerURL);
       const md = await res.text();
 
-      if (!md || md.trim().length === 0) {
-        container.innerHTML = "<p>Empty response</p>";
+      if (!md) {
+        container.innerHTML = "<p>Empty</p>";
         return;
       }
 
       document.title = md.split("\n")[0].replace("# ", "") || "Article";
 
-      // Markdown
-      let html = marked.parse(md);
+      const html = marked.parse(md);
       container.innerHTML = html;
 
-      // CITATIONS
+      // citations
       container.innerHTML = container.innerHTML.replace(
         /\[(\d+)\]/g,
-        (m, num) => `<span class="citation" data-id="${num}">[${num}]</span>`
+        (m, num) => `<span class="citation">[${num}]</span>`
       );
 
-      // REFERENCES (ONLY ONCE — FROM WORKER)
-      document.querySelectorAll("li").forEach(li => {
-        const match = li.textContent.match(/^\[(\d+)\]/);
-        if (match) li.id = `ref-${match[1]}`;
-      });
-
-      // CLICK HANDLERS
-      document.querySelectorAll(".citation").forEach(el => {
-        el.onclick = () => {
-          const target = document.getElementById(`ref-${el.dataset.id}`);
-          if (!target) return;
-
-          target.scrollIntoView({ behavior: "smooth", block: "center" });
-          target.style.background = "rgba(111,168,255,0.15)";
-
-          setTimeout(() => target.style.background = "", 1200);
-        };
-      });
-
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
       container.innerHTML = "<p>Error loading article</p>";
     }
   }
 
   loadArticle();
-
-  // PDF EXPORT
-  document.getElementById("pdfBtn").onclick = () => {
-    html2pdf()
-      .set({
-        margin: 10,
-        filename: document.title + ".pdf",
-        html2canvas: { scale: 2 },
-        jsPDF: { format: "a4" }
-      })
-      .from(document.getElementById("article"))
-      .save();
-  };
 }
 </script>
 
