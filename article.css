@@ -1,9 +1,13 @@
 /* =========================
-   INDEXMOD ARTICLE STYLE
-   CLEAN EDITORIAL LAYOUT
+   INDEXMOD ARTICLE STYLE (FIXED)
+   CLEAN + AIRY + STABLE LAYOUT
    ========================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap');
+
+/* =========================
+   RESET (CRITICAL FIX)
+   ========================= */
 
 * {
   box-sizing: border-box;
@@ -11,97 +15,101 @@
   padding: 0;
 }
 
-body {
-  font-family: 'Old Standard TT', serif;
-  background: #fff;
-  color: #000;
-  line-height: 1.75;
-  padding: 48px 24px;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #000000;
 }
 
 /* =========================
-   ARTICLE WRAPPER
+   BASE BODY
+   ========================= */
+
+body {
+  font-family: 'Old Standard TT', serif;
+  line-height: 1.75;
+  font-size: 18px;
+}
+
+/* =========================
+   LAYOUT WRAPPER
    ========================= */
 
 .article {
   max-width: 760px;
   margin: 0 auto;
+  padding: 64px 24px;
 }
 
 /* =========================
-   TITLE
+   TYPOGRAPHY
    ========================= */
 
 .article h1 {
-  font-size: 2.4rem;
-  line-height: 1.2;
-  margin-bottom: 12px;
+  font-size: 2.6rem;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.article h2 {
+  font-size: 1.7rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.article h3 {
+  font-size: 1.3rem;
+  margin: 2rem 0 0.8rem;
 }
 
 /* =========================
-   META INFO
+   PARAGRAPHS (FIXED SPACING)
    ========================= */
 
-.meta {
-  font-size: 0.95rem;
-  opacity: 0.7;
-  margin-bottom: 32px;
+.article p {
+  margin-bottom: 1.25rem;
 }
 
 /* =========================
-   CONTENT
+   LINKS
    ========================= */
 
-.content {
-  font-size: 1.15rem;
-}
-
-.content p {
-  margin-bottom: 1.2rem;
-}
-
-.content h2 {
-  font-size: 1.6rem;
-  margin: 2rem 0 1rem;
-}
-
-.content h3 {
-  font-size: 1.25rem;
-  margin: 1.5rem 0 0.8rem;
-}
-
-/* links */
-
-.content a {
+.article a {
   color: #000;
   text-decoration: underline;
 }
 
-.content a:hover {
+.article a:hover {
   opacity: 0.6;
 }
 
-/* images */
+/* =========================
+   IMAGES
+   ========================= */
 
-.content img {
+.article img {
   max-width: 100%;
   height: auto;
-  margin: 24px 0;
-  filter: grayscale(40%);
+  display: block;
+  margin: 28px 0;
   border: 1px solid #000;
-}
-
-/* blockquote */
-
-.content blockquote {
-  border-left: 3px solid #000;
-  padding-left: 16px;
-  margin: 24px 0;
-  font-style: italic;
+  filter: grayscale(35%);
 }
 
 /* =========================
-   SOURCES
+   BLOCKQUOTE
+   ========================= */
+
+.article blockquote {
+  border-left: 3px solid #000;
+  padding-left: 16px;
+  margin: 28px 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* =========================
+   SOURCES BLOCK
    ========================= */
 
 .sources {
@@ -125,19 +133,40 @@ body {
 }
 
 /* =========================
+   CITATIONS
+   ========================= */
+
+.citation {
+  font-size: 0.85em;
+  vertical-align: super;
+  opacity: 0.7;
+}
+
+/* =========================
+   CRITICAL FIX: REMOVE "FAKE TOP GAP" BUGS
+   ========================= */
+
+body::before,
+html::before,
+body::after,
+html::after {
+  content: none !important;
+}
+
+/* =========================
    RESPONSIVE
    ========================= */
 
 @media (max-width: 768px) {
   body {
-    padding: 24px 16px;
+    font-size: 16px;
+  }
+
+  .article {
+    padding: 32px 16px;
   }
 
   .article h1 {
     font-size: 2rem;
-  }
-
-  .article {
-    max-width: 100%;
   }
 }
