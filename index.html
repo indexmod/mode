@@ -42,6 +42,13 @@
       return c;
     });
 
+    function slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
+    }
+
     Object.keys(groups).sort().forEach((letter, i) => {
       const group = document.createElement('div');
       group.className = 'topic-group';
@@ -51,35 +58,16 @@
       group.appendChild(title);
 
       groups[letter].sort().forEach(topic => {
+
         const a = document.createElement('a');
         a.className = 'topic';
         a.textContent = topic;
-        a.style.cursor = "pointer";
 
-        a.onclick = async (e) => {
-          e.preventDefault();
+        const slug = slugify(topic);
 
-          output.textContent = "Generating article...";
-
-          try {
-            const res = await fetch(
-              `https://indexmod-ai.chorus-live.workers.dev/?topic=${encodeURIComponent(topic)}`
-            );
-
-            const html = await res.text();
-
-            const win = window.open();
-            win.document.open();
-            win.document.write(html);
-            win.document.close();
-
-            output.textContent = topic;
-
-          } catch (err) {
-            output.textContent = "Error loading article";
-            console.error(err);
-          }
-        };
+        a.href = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
 
         group.appendChild(a);
       });
