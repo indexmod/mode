@@ -1,8 +1,22 @@
 /* =========================
-   INDEXMOD ARTICLE STYLE (AIRY + WIDE MARGINS)
+   INDEXMOD ARTICLE STYLE (SYSTEM VERSION)
+   AIRY + CONSISTENT DESIGN SYSTEM
    ========================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap');
+
+/* =========================
+   DESIGN TOKENS (LOCAL FALLBACK)
+   ========================= */
+
+:root {
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 64px;
+  --space-xl: 96px;
+  --space-xxl: 120px;
+}
 
 /* =========================
    RESET
@@ -32,43 +46,48 @@ body {
 }
 
 /* =========================
-   ARTICLE WRAPPER (FIXED HORIZONTAL SPACE)
+   ARTICLE WRAPPER (MAIN AIR SYSTEM)
    ========================= */
 
 .article {
   max-width: 760px;
   margin: 0 auto;
 
-  /* 🔥 BIGGER AIR (VERTICAL + HORIZONTAL) */
-  padding: 96px 64px 80px;
+  /* 🔥 ключ: единый “редакционный воздух” */
+  padding: var(--space-xxl) var(--space-xl);
 }
 
 /* =========================
-   TYPOGRAPHY
+   HEADLINE ZONE (CRITICAL IMPROVEMENT)
    ========================= */
 
 .article h1 {
   font-size: 2.8rem;
   line-height: 1.1;
-  margin: 0 0 28px 0;
+
+  margin: 0 0 var(--space-lg);
+  padding-top: var(--space-lg);
+
+  /* визуально “внутри пространства”, не у края */
 }
 
 .article h2 {
   font-size: 1.8rem;
-  margin: 3rem 0 1.2rem;
+  margin: var(--space-xl) 0 var(--space-md);
 }
 
 .article h3 {
   font-size: 1.35rem;
-  margin: 2.2rem 0 1rem;
+  margin: var(--space-lg) 0 var(--space-sm);
 }
 
 /* =========================
-   PARAGRAPHS
+   TEXT FLOW
    ========================= */
 
 .article p {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-md);
+  max-width: 70ch;
 }
 
 /* =========================
@@ -80,19 +99,21 @@ body {
   height: auto;
   display: block;
 
-  margin: 36px 0;
+  margin: var(--space-xl) 0;
+
   border: 1px solid #000;
   filter: grayscale(35%);
 }
 
 /* =========================
-   BLOCKQUOTE
+   BLOCKQUOTES
    ========================= */
 
 .article blockquote {
   border-left: 3px solid #000;
-  padding-left: 18px;
-  margin: 36px 0;
+  padding-left: var(--space-md);
+
+  margin: var(--space-xl) 0;
   font-style: italic;
   opacity: 0.9;
 }
@@ -102,10 +123,14 @@ body {
    ========================= */
 
 .sources {
-  margin-top: 64px;
-  padding-top: 28px;
+  margin-top: var(--space-xxl);
+  padding-top: var(--space-lg);
   border-top: 1px solid #000;
   font-size: 0.95rem;
+}
+
+.sources h3 {
+  margin-bottom: var(--space-sm);
 }
 
 /* =========================
@@ -119,7 +144,7 @@ body {
 }
 
 /* =========================
-   STABILITY FIXES
+   SAFETY FIX (NO GHOST LAYERS)
    ========================= */
 
 html::before,
@@ -129,6 +154,10 @@ body::after {
   content: none !important;
   display: none !important;
 }
+
+/* =========================
+   FIRST ELEMENT FIX
+   ========================= */
 
 .article > *:first-child {
   margin-top: 0;
@@ -144,7 +173,7 @@ body::after {
   }
 
   .article {
-    padding: 64px 20px 60px;
+    padding: var(--space-xl) var(--space-md);
   }
 
   .article h1 {
