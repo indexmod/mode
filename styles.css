@@ -1,196 +1,132 @@
 /* =========================
-   INDEXMOD GLOBAL STYLE
-   NEWSPAPER EDITION (SYSTEM VERSION)
+   INDEXMOD ARTICLE VIEWER LAYOUT FIX
    ========================= */
 
-@import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
-
-/* =========================
-   RESET
-   ========================= */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
+:root {
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 64px;
+  --space-xl: 96px;
+  --space-xxl: 120px;
 }
 
 /* =========================
-   BODY (ONLY BACKGROUND)
+   BODY
    ========================= */
 
 body {
-  font-family: 'Old Standard TT', serif;
-  line-height: 1.75;
-  color: #111;
-  background: #fff;
-
   margin: 0;
-  padding: 0; /* 🔥 важно: убираем внешний шум */
+  padding: 0;
+
+  font-family: 'Old Standard TT', serif;
+  background: #fff;
+  color: #111;
+  line-height: 1.8;
 }
 
 /* =========================
-   CONTAINER (MAIN AIR SYSTEM)
+   MAIN WRAPPER (THIS IS YOUR REAL CONTAINER)
    ========================= */
 
-.container {
-  max-width: 1200px;
+.content-container {
+  max-width: 900px;
   margin: 0 auto;
 
-  /* 🔥 ГЛАВНЫЙ ВОЗДУХ СТРАНИЦЫ */
-  padding: 96px 64px 120px;
+  /* 🔥 ВОТ ЭТО ДАЁТ ВОЗДУХ */
+  padding: var(--space-xxl) var(--space-xl);
 }
 
 /* =========================
-   TYPOGRAPHY
+   TOPBAR
    ========================= */
 
-h1 {
-  font-size: 3rem;
-  font-weight: 700;
+#topbar {
+  position: sticky;
+  top: 0;
 
-  margin: 0 0 64px;
-  letter-spacing: -0.02em;
-  color: #000;
+  background: #fff;
+  border-bottom: 1px solid #000;
 
-  /* 🔥 заголовок “внутри воздуха” */
-  padding-top: 32px;
+  padding: var(--space-sm) 0;
+  margin-bottom: var(--space-xl);
 }
 
-h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 48px 0 24px;
-  letter-spacing: -0.01em;
-  color: #000;
+/* =========================
+   ARTICLE CONTENT (MARKDOWN OUTPUT TARGET)
+   ========================= */
+
+#article {
+  max-width: 760px;
 }
 
-h3 {
+/* =========================
+   TYPOGRAPHY INSIDE ARTICLE
+   ========================= */
+
+#article h1 {
+  font-size: 2.8rem;
+  margin: 0 0 var(--space-lg);
+  padding-top: var(--space-lg);
+}
+
+#article h2 {
+  font-size: 1.8rem;
+  margin: var(--space-xl) 0 var(--space-md);
+}
+
+#article h3 {
   font-size: 1.4rem;
-  font-weight: 700;
-  margin: 32px 0 16px;
-  color: #000;
+  margin: var(--space-lg) 0 var(--space-sm);
 }
 
-/* =========================
-   TEXT
-   ========================= */
-
-p {
-  font-size: 1.15rem;
-  margin: 0 0 18px;
+#article p {
+  margin-bottom: var(--space-md);
   max-width: 70ch;
 }
 
 /* =========================
-   LINKS
+   IMAGES
    ========================= */
 
-a {
-  color: #111;
-  text-decoration: none;
-}
-
-a:hover {
-  opacity: 0.65;
-}
-
-/* =========================
-   LISTS
-   ========================= */
-
-ul {
-  list-style: none;
-  margin: 0 0 24px;
-  padding: 0;
-}
-
-li {
-  font-size: 1.15rem;
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
-/* =========================
-   TOPIC LAYOUT
-   ========================= */
-
-.columns-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-
-  margin-top: 64px;
-}
-
-.column {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* =========================
-   TOPIC SPACING (IMPROVED RHYTHM)
-   ========================= */
-
-.topic-group {
-  margin-bottom: 48px;
-}
-
-.topic-item {
-  margin-bottom: 10px;
-}
-
-.topic {
-  display: block;
-  line-height: 1.5;
-  padding: 2px 0;
-}
-
-/* =========================
-   ARTICLE LINK OVERRIDE SAFETY
-   ========================= */
-
-.article {
+#article img {
   max-width: 100%;
+  display: block;
+  margin: var(--space-xl) 0;
+  border: 1px solid #000;
+}
+
+/* =========================
+   BLOCKQUOTE
+   ========================= */
+
+#article blockquote {
+  border-left: 3px solid #000;
+  padding-left: var(--space-md);
+  margin: var(--space-xl) 0;
+  font-style: italic;
+}
+
+/* =========================
+   CITATIONS
+   ========================= */
+
+.citation {
+  font-size: 0.85em;
+  vertical-align: super;
+  opacity: 0.7;
 }
 
 /* =========================
    RESPONSIVE
    ========================= */
 
-@media (max-width: 1024px) {
-  .container {
-    padding: 64px 48px 100px;
-  }
-
-  .columns-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-
-  h1 {
-    font-size: 2.4rem;
-    margin-bottom: 48px;
-  }
-}
-
 @media (max-width: 768px) {
-  .container {
-    padding: 48px 24px 80px;
+  .content-container {
+    padding: var(--space-xl) var(--space-md);
   }
 
-  .columns-container {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  h1 {
-    font-size: 2rem;
+  #article h1 {
+    font-size: 2.2rem;
   }
 }
