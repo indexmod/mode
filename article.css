@@ -1,12 +1,11 @@
 /* =========================
-   INDEXMOD ARTICLE STYLE (FIXED)
-   CLEAN + AIRY + STABLE LAYOUT
+   INDEXMOD ARTICLE STYLE (AIRY + WIDE MARGINS)
    ========================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap');
 
 /* =========================
-   RESET (CRITICAL FIX)
+   RESET
    ========================= */
 
 * {
@@ -15,31 +14,33 @@
   padding: 0;
 }
 
-html, body {
+html {
+  background: #ffffff;
+}
+
+body {
   margin: 0;
   padding: 0;
   background: #ffffff;
   color: #000000;
-}
 
-/* =========================
-   BASE BODY
-   ========================= */
-
-body {
   font-family: 'Old Standard TT', serif;
-  line-height: 1.75;
+  line-height: 1.8;
   font-size: 18px;
+
+  min-height: 100vh;
 }
 
 /* =========================
-   LAYOUT WRAPPER
+   ARTICLE WRAPPER (FIXED HORIZONTAL SPACE)
    ========================= */
 
 .article {
   max-width: 760px;
   margin: 0 auto;
-  padding: 64px 24px;
+
+  /* 🔥 BIGGER AIR (VERTICAL + HORIZONTAL) */
+  padding: 96px 64px 80px;
 }
 
 /* =========================
@@ -47,40 +48,27 @@ body {
    ========================= */
 
 .article h1 {
-  font-size: 2.6rem;
-  line-height: 1.15;
-  margin-bottom: 16px;
+  font-size: 2.8rem;
+  line-height: 1.1;
+  margin: 0 0 28px 0;
 }
 
 .article h2 {
-  font-size: 1.7rem;
-  margin: 2.5rem 0 1rem;
+  font-size: 1.8rem;
+  margin: 3rem 0 1.2rem;
 }
 
 .article h3 {
-  font-size: 1.3rem;
-  margin: 2rem 0 0.8rem;
+  font-size: 1.35rem;
+  margin: 2.2rem 0 1rem;
 }
 
 /* =========================
-   PARAGRAPHS (FIXED SPACING)
+   PARAGRAPHS
    ========================= */
 
 .article p {
-  margin-bottom: 1.25rem;
-}
-
-/* =========================
-   LINKS
-   ========================= */
-
-.article a {
-  color: #000;
-  text-decoration: underline;
-}
-
-.article a:hover {
-  opacity: 0.6;
+  margin-bottom: 1.5rem;
 }
 
 /* =========================
@@ -91,7 +79,8 @@ body {
   max-width: 100%;
   height: auto;
   display: block;
-  margin: 28px 0;
+
+  margin: 36px 0;
   border: 1px solid #000;
   filter: grayscale(35%);
 }
@@ -102,34 +91,21 @@ body {
 
 .article blockquote {
   border-left: 3px solid #000;
-  padding-left: 16px;
-  margin: 28px 0;
+  padding-left: 18px;
+  margin: 36px 0;
   font-style: italic;
   opacity: 0.9;
 }
 
 /* =========================
-   SOURCES BLOCK
+   SOURCES
    ========================= */
 
 .sources {
-  margin-top: 48px;
-  padding-top: 24px;
+  margin-top: 64px;
+  padding-top: 28px;
   border-top: 1px solid #000;
   font-size: 0.95rem;
-}
-
-.sources h3 {
-  font-size: 1rem;
-  margin-bottom: 12px;
-}
-
-.sources ul {
-  list-style: none;
-}
-
-.sources li {
-  margin-bottom: 8px;
 }
 
 /* =========================
@@ -143,14 +119,19 @@ body {
 }
 
 /* =========================
-   CRITICAL FIX: REMOVE "FAKE TOP GAP" BUGS
+   STABILITY FIXES
    ========================= */
 
-body::before,
 html::before,
-body::after,
-html::after {
+html::after,
+body::before,
+body::after {
   content: none !important;
+  display: none !important;
+}
+
+.article > *:first-child {
+  margin-top: 0;
 }
 
 /* =========================
@@ -163,10 +144,10 @@ html::after {
   }
 
   .article {
-    padding: 32px 16px;
+    padding: 64px 20px 60px;
   }
 
   .article h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 }
