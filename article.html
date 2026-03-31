@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <title>Loading...</title>
 
-  <link rel="stylesheet" href="./styles.css">
+  <!-- FIXED CSS CACHE -->
+  <link rel="stylesheet" href="./article.css?v=999">
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
+    /* minimal safe UI ONLY */
     body {
       margin: 0;
       font-family: system-ui, -apple-system, sans-serif;
@@ -31,7 +34,6 @@
       color: #6fa8ff;
     }
 
-    /* CITATIONS */
     .citation {
       color: #6fa8ff;
       cursor: pointer;
@@ -42,16 +44,29 @@
       text-decoration: underline;
     }
 
-    /* REFERENCES */
+    #topbar {
+      position: sticky;
+      top: 0;
+      background: #0b0b0b;
+      padding: 10px 0;
+      border-bottom: 1px solid #222;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #6fa8ff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 6px;
+      color: #000;
+      font-weight: 600;
+    }
+
     li {
       transition: background 0.3s ease;
       padding: 2px 4px;
       border-radius: 4px;
-    }
-
-    /* loading state */
-    #article {
-      min-height: 200px;
     }
   </style>
 </head>
@@ -59,7 +74,13 @@
 <body>
 
 <div class="content-container">
+
+  <div id="topbar">
+    <button id="pdfBtn">Download PDF</button>
+  </div>
+
   <div id="article">Generating article...</div>
+
 </div>
 
 <script>
@@ -72,7 +93,7 @@ if (!slug) {
   container.innerHTML = "<p>No article</p>";
 } else {
 
-  const workerURL = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
+  const workerURL = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}?t=${Date.now()}`;
 
   async function loadArticle() {
     try {
@@ -85,66 +106,35 @@ if (!slug) {
         return;
       }
 
-      // -----------------------------
-      // Markdown → HTML
-      // -----------------------------
-      let html = marked.parse(md);
+      document.title = md.split("\n")[0].replace("# ", "") || "Article";
 
+      // Markdown
+      let html = marked.parse(md);
       container.innerHTML = html;
 
-      // -----------------------------
-      // Title
-      // -----------------------------
-      const firstLine = md.split("\n")[0];
-      if (firstLine.startsWith("# ")) {
-        document.title = firstLine.replace("# ", "");
-      }
-
-      // -----------------------------
-      // CITATIONS [1] → clickable
-      // -----------------------------
+      // CITATIONS
       container.innerHTML = container.innerHTML.replace(
         /\[(\d+)\]/g,
-        (m, num) => {
-          return `<span class="citation" data-id="${num}">[${num}]</span>`;
-        }
+        (m, num) => `<span class="citation" data-id="${num}">[${num}]</span>`
       );
 
-      // -----------------------------
-      // INDEX REFERENCES
-      // -----------------------------
-      const refs = document.querySelectorAll("li");
-
-      refs.forEach(li => {
+      // REFERENCES (ONLY ONCE — FROM WORKER)
+      document.querySelectorAll("li").forEach(li => {
         const match = li.textContent.match(/^\[(\d+)\]/);
-        if (match) {
-          li.id = `ref-${match[1]}`;
-        }
+        if (match) li.id = `ref-${match[1]}`;
       });
 
-      // -----------------------------
       // CLICK HANDLERS
-      // -----------------------------
       document.querySelectorAll(".citation").forEach(el => {
-
         el.onclick = () => {
-          const id = el.dataset.id;
-          const target = document.getElementById(`ref-${id}`);
-
+          const target = document.getElementById(`ref-${el.dataset.id}`);
           if (!target) return;
 
-          target.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
           target.style.background = "rgba(111,168,255,0.15)";
 
-          setTimeout(() => {
-            target.style.background = "";
-          }, 1200);
+          setTimeout(() => target.style.background = "", 1200);
         };
-
       });
 
     } catch (err) {
@@ -154,6 +144,19 @@ if (!slug) {
   }
 
   loadArticle();
+
+  // PDF EXPORT
+  document.getElementById("pdfBtn").onclick = () => {
+    html2pdf()
+      .set({
+        margin: 10,
+        filename: document.title + ".pdf",
+        html2canvas: { scale: 2 },
+        jsPDF: { format: "a4" }
+      })
+      .from(document.getElementById("article"))
+      .save();
+  };
 }
 </script>
 
