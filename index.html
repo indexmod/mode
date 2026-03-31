@@ -4,102 +4,16 @@
   <meta charset="UTF-8">
   <title>Indexmod Fashion & Art 2026</title>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Old Standard TT', serif;
-      background: #fff;
-      color: #111;
-      margin: 40px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* LOGO */
-    .logo {
-      height: 58px;
-      display: block;
-      margin-bottom: 40px;
-    }
-
-    /* 3 КОЛОНКИ */
-    .topics {
-      display: flex;
-      gap: 60px;
-      align-items: flex-start;
-    }
-
-    .column {
-      flex: 1;
-    }
-
-    /* GROUP */
-    .topic-group {
-      margin-bottom: 40px;
-    }
-
-    .topic-group h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 18px;
-      letter-spacing: 0.02em;
-    }
-
-    /* буквица (без обтекания, чистый блок) */
-    .topic-group h2 .letter {
-      display: block;
-      font-size: 3.6rem;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    /* TOPIC */
-    .topic {
-      display: block;
-      font-size: 1rem;
-      line-height: 1.55;
-      text-decoration: none;
-      color: #111;
-      transition: color 0.25s ease;
-    }
-
-    .topic:hover {
-      color: #888;
-    }
-
-    /* OUTPUT */
-    #output {
-      margin-top: 80px;
-      font-size: 0.85rem;
-      color: #999;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .topics {
-        flex-direction: column;
-      }
-    }
-  </style>
+  <!-- подключаем внешний стиль -->
+  <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
 
   <div class="container">
 
-    <!-- LOGO (оставили только его) -->
-    <img src="/mode/logo.png" class="logo" alt="logo">
+    <!-- LOGO -->
+    <img src="./logo.png" class="logo" alt="logo">
 
     <div class="topics" id="list"></div>
 
