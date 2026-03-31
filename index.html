@@ -5,86 +5,109 @@
   <title>Indexmod Fashion & Art 2026</title>
 
   <link rel="stylesheet" href="./styles.css">
+
+  <!-- Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <img src="./logo.png" class="logo" alt="logo">
+  <img src="./logo.png" class="logo" alt="logo">
 
-    <div class="columns-container" id="list"></div>
+  <div class="columns-container" id="list"></div>
 
-    <div id="output">Click a topic</div>
+</div>
 
+<!-- ARTICLE VIEW (overlay) -->
+<div id="viewer" class="viewer hidden">
+  <div class="viewer-content">
+    <button id="close">×</button>
+    <div id="article"></div>
   </div>
+</div>
 
-  <script type="module">
-    import { loadTopics } from './topics.js';
+<script type="module">
+import { loadTopics } from './topics.js';
 
-    const list = document.getElementById('list');
-    const output = document.getElementById('output');
+const list = document.getElementById('list');
+const viewer = document.getElementById('viewer');
+const article = document.getElementById('article');
+const closeBtn = document.getElementById('close');
 
-    const topics = await loadTopics();
+const topics = await loadTopics();
 
-    const groups = {};
+const groups = {};
 
-    // группировка по первой букве
-    topics.forEach(t => {
-      const letter = t[0].toUpperCase();
-      if (!groups[letter]) groups[letter] = [];
-      groups[letter].push(t);
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+}
+
+// группировка
+topics.forEach(t => {
+  const letter = t[0].toUpperCase();
+  if (!groups[letter]) groups[letter] = [];
+  groups[letter].push(t);
+});
+
+// 3 колонки
+const cols = Array.from({ length: 3 }, () => {
+  const c = document.createElement('div');
+  c.className = 'column';
+  list.appendChild(c);
+  return c;
+});
+
+// рендер
+Object.keys(groups).sort().forEach((letter, i) => {
+
+  const group = document.createElement('div');
+  group.className = 'topic-group';
+
+  const title = document.createElement('h2');
+  title.innerHTML = `<span class="letter">${letter}</span>`;
+  group.appendChild(title);
+
+  groups[letter].sort().forEach(topic => {
+
+    const a = document.createElement('a');
+    a.className = 'topic';
+    a.textContent = topic;
+
+    const slug = slugify(topic);
+
+    a.href = "#";
+
+    a.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const url = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
+
+      const res = await fetch(url);
+      const md = await res.text();
+
+      const html = marked.parse(md);
+
+      article.innerHTML = html;
+      viewer.classList.remove("hidden");
     });
 
-    // создаём 3 колонки
-    const cols = Array.from({ length: 3 }, () => {
-      const c = document.createElement('div');
-      c.className = 'column';
-      list.appendChild(c);
-      return c;
-    });
+    group.appendChild(a);
+  });
 
-    // slugify для URL
-    function slugify(text) {
-      return text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "");
-    }
+  cols[i % 3].appendChild(group);
+});
 
-    // рендер групп
-    Object.keys(groups).sort().forEach((letter, i) => {
-
-      const group = document.createElement('div');
-      group.className = 'topic-group';
-
-      const title = document.createElement('h2');
-      title.innerHTML = `<span class="letter">${letter}</span>`;
-      group.appendChild(title);
-
-      // рендер тем внутри группы
-      groups[letter].sort().forEach(topic => {
-
-        const item = document.createElement('div');
-        item.className = 'topic-item';
-
-        const a = document.createElement('a');
-        a.className = 'topic';
-        a.textContent = topic;
-
-        const slug = slugify(topic);
-
-        a.href = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-
-        item.appendChild(a);
-        group.appendChild(item);
-      });
-
-      cols[i % 3].appendChild(group);
-    });
-  </script>
+// close modal
+closeBtn.onclick = () => {
+  viewer.classList.add("hidden");
+  article.innerHTML = "";
+};
+</script>
 
 </body>
 </html>
