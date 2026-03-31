@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Article</title>
+
+  <link rel="stylesheet" href="./styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+  <div id="article">Loading...</div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const slug = params.get("slug");
+
+if (!slug) {
+  document.getElementById("article").innerHTML = "No article";
+} else {
+
+  const url = `https://indexmod-ai.chorus-live.workers.dev/article/${slug}`;
+
+  fetch(url)
+    .then(r => r.text())
+    .then(md => {
+      document.getElementById("article").innerHTML = marked.parse(md);
+    })
+    .catch(() => {
+      document.getElementById("article").innerHTML = "Error loading article";
+    });
+}
+</script>
+
+</body>
+</html>
