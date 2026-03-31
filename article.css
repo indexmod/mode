@@ -46,37 +46,46 @@ body {
 }
 
 /* =========================
-   ARTICLE WRAPPER (MAIN AIR SYSTEM)
+   OUTER LAYOUT (YOUR ACTUAL WRAPPER)
    ========================= */
 
-.article {
-  max-width: 760px;
+.content-container {
+  width: 100%;
+  max-width: 1100px;
+
   margin: 0 auto;
 
-  /* 🔥 ключ: единый “редакционный воздух” */
+  /* 🔥 главный “воздух страницы” */
   padding: var(--space-xxl) var(--space-xl);
+}
+
+/* =========================
+   ARTICLE WRAPPER (MARKDOWN TARGET)
+   ========================= */
+
+#article {
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 /* =========================
    HEADLINE ZONE (CRITICAL IMPROVEMENT)
    ========================= */
 
-.article h1 {
+#article h1 {
   font-size: 2.8rem;
   line-height: 1.1;
 
   margin: 0 0 var(--space-lg);
   padding-top: var(--space-lg);
-
-  /* визуально “внутри пространства”, не у края */
 }
 
-.article h2 {
+#article h2 {
   font-size: 1.8rem;
   margin: var(--space-xl) 0 var(--space-md);
 }
 
-.article h3 {
+#article h3 {
   font-size: 1.35rem;
   margin: var(--space-lg) 0 var(--space-sm);
 }
@@ -85,7 +94,7 @@ body {
    TEXT FLOW
    ========================= */
 
-.article p {
+#article p {
   margin-bottom: var(--space-md);
   max-width: 70ch;
 }
@@ -94,7 +103,7 @@ body {
    IMAGES
    ========================= */
 
-.article img {
+#article img {
   max-width: 100%;
   height: auto;
   display: block;
@@ -109,7 +118,7 @@ body {
    BLOCKQUOTES
    ========================= */
 
-.article blockquote {
+#article blockquote {
   border-left: 3px solid #000;
   padding-left: var(--space-md);
 
@@ -159,7 +168,7 @@ body::after {
    FIRST ELEMENT FIX
    ========================= */
 
-.article > *:first-child {
+#article > *:first-child {
   margin-top: 0;
 }
 
@@ -172,11 +181,11 @@ body::after {
     font-size: 16px;
   }
 
-  .article {
+  .content-container {
     padding: var(--space-xl) var(--space-md);
   }
 
-  .article h1 {
+  #article h1 {
     font-size: 2.2rem;
   }
 }
